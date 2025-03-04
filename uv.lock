@@ -40,7 +40,7 @@ wheels = [
 ]
 
 [[package]]
-name = "api-example-app"
+name = "api-example-app-todo-list"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
