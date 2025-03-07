@@ -116,8 +116,8 @@ class BaseRepo:
         """
         if instance is None:
             return None
-        # Use Pydantic's from_orm for conversion
-        return dto_class.from_orm(instance)
+        # Use Pydantic's model_validate for conversion
+        return dto_class.model_validate(instance)
 
     @staticmethod
     def _convert_to_dto_list(
@@ -132,5 +132,5 @@ class BaseRepo:
         """
         if instance_list is None:
             return []
-        # Use Pydantic's from_orm for conversion
-        return [dto_class.from_orm(i) for i in instance_list]
+        # Use Pydantic's model_validate for conversion
+        return [dto_class.model_validate(i) for i in instance_list]

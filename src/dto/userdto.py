@@ -1,31 +1,24 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict
 
 
 class UserResponseDTO(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     name: str
     email: EmailStr
 
-    class Config:
-        orm_mod = True
-        from_attributes = True
-
 
 class UserCreateDTO(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     name: str
     email: EmailStr
     password: str
 
-    class Config:
-        orm_mod = True
-        from_attributes = True
-
 
 class UserLoginDTO(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     email: EmailStr
     password: str
-
-    class Config:
-        orm_mod = True
-        from_attributes = True
-

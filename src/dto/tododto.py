@@ -1,9 +1,11 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class ToDoDTO(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     title: str
     description: str
@@ -11,9 +13,6 @@ class ToDoDTO(BaseModel):
     updated_at: datetime
     user_id: int
 
-    class Config:
-        orm_mod = True
-        from_attributes=True
 
 class ToDoUpdateDTO:
     title: str

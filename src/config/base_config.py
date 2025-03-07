@@ -1,9 +1,11 @@
 from typing import Literal
 
-from pydantic import SecretStr
+from pydantic import SecretStr, ConfigDict
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
+    model_config = ConfigDict(env_file=".env", env_file_encoding="utf-8")
+
     DB_HOST: str
     DB_PORT: int
     DB_USER: str
@@ -13,9 +15,6 @@ class Settings(BaseSettings):
     ALGORITHM: str
     AUTH_METHOD: Literal["header", "cookie"]
 
-    class Config:
-        env_file = '.env'
-        env_file_encoding = 'utf-8'
 
 settings = Settings()
 
