@@ -5,7 +5,7 @@ HOST=0.0.0.0
 PORT=8000
 
 # Run app
-run:
+run: test
 	alembic upgrade head  # Use migration before starting
 	uvicorn $(APP_MODULE) --host $(HOST) --port $(PORT)
 
@@ -14,6 +14,8 @@ run:
 migrate:
 	alembic upgrade head
 
+test:
+	pytest --cov
 
 start-debug:
 	uvicorn src.app:app --reload
