@@ -69,7 +69,7 @@ class TodoRepo(BaseRepo):
     @classmethod
     async def update_todo(
         cls, session: AsyncSession, todo_id: int, new_todo_data: ToDoUpdateDTO
-    ):
+    ) -> Optional[ToDoDTO]:
         """
         Update an existing todo with new data.
 
@@ -82,7 +82,7 @@ class TodoRepo(BaseRepo):
             todo = await cls._find_by_id(session=s, id=todo_id)
             if not todo:
                 return None
-            for key, value in new_todo_data.dict(exclude_unset=True).items():
+            for key, value in new_todo_data.model_dump(exclude_unset=True).items():
                 setattr(todo, key, value)
             s.add(todo)
             await s.commit()

@@ -14,6 +14,6 @@ class ToDoDTO(BaseModel):
     user_id: int
 
 
-class ToDoUpdateDTO:
+class ToDoUpdateDTO(BaseModel):
     title: str
     description: str
