@@ -131,24 +131,3 @@ async def test_get_todo_ower_id(db_session: AsyncSession):
     user_id = await TodoRepo.get_todo_owner_id(db_session, 1)
 
     assert user_id == 1
-
-
-# def test_get_task(test_db):
-#     repo = TaskRepository(test_db)
-#     created = repo.create(title="Test Task")
-#     task = repo.get(created.id)
-#     assert task.title == "Test Task"
-
-
-# def test_update_task(test_db):
-#     repo = TaskRepository(test_db)
-#     created = repo.create(title="Old Title")
-#     updated = repo.update(created.id, {"title": "New Title"})
-#     assert updated.title == "New Title"
-
-
-# def test_delete_task(test_db):
-#     repo = TaskRepository(test_db)
-#     created = repo.create(title="To Delete")
-#     repo.delete(created.id)
-#     assert repo.get(created.id) is None
