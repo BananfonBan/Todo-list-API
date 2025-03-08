@@ -14,3 +14,11 @@ dependencies = [
     "python-jose>=3.4.0",
     "sqlalchemy>=2.0.38",
 ]
+
+[dependency-groups]
+test = [
+    "aiosqlite>=0.21.0",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.25.3",
+    "pytest-cov>=6.0.0",
+]
