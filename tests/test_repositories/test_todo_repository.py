@@ -40,6 +40,7 @@ async def test_find_by_id_as_dto(db_session: AsyncSession):
 
     assert none_todo is None
 
+
 @pytest.mark.asyncio
 async def test_find_all(db_session: AsyncSession):
     todo_list: list[ToDoDTO] = await TodoRepo.find_all(db_session)
@@ -76,7 +77,6 @@ async def test_find_all_by_user_id(db_session: AsyncSession):
     assert todo_list[0].description == "Default description"
     assert todo_list[1].title == "Second title"
     assert todo_list[1].description == "Second description"
-    
 
 
 @pytest.mark.asyncio

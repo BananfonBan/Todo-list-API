@@ -10,7 +10,9 @@ from src.config.logging_confing import logging  # noqa
 
 @pytest.mark.asyncio
 async def test_find_by_email(db_session: AsyncSession):
-    user_dto: UserResponseDTO = await UserRepo.find_by_email(db_session, "test@example.com")
+    user_dto: UserResponseDTO = await UserRepo.find_by_email(
+        db_session, "test@example.com"
+    )
 
     assert isinstance(user_dto, UserResponseDTO)
     assert user_dto.id == 1
@@ -56,5 +58,5 @@ async def test_get_passowrd_hash(db_session):
     assert hashed_password == "hashed_password"
 
     none_password = await UserRepo.get_password_hash(db_session, "none@email.com")
-    
+
     assert none_password is None
