@@ -104,7 +104,7 @@ class AuthService:
 
         user_id = payload.get("sub")
         if not user_id:
-            return services_exceptions.NotFoundTokenError("User ID not found")
+            raise services_exceptions.NotFoundTokenError("User ID not found")
 
         user = await UserRepo.find_by_id(session, int(user_id))
         return user
