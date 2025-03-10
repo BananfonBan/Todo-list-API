@@ -6,7 +6,7 @@ from src.repositories.todo_repo import TodoRepo
 from src.dto import ToDoDTO, ToDoUpdateDTO
 from src.services.common_func import sort_dto_list_order_by
 
-from src.config.logging_confing import logging
+from src.config.logging_confing import logging # noqa
 
 
 class ToDoService:
@@ -128,6 +128,4 @@ class ToDoService:
         :return: bool - True if the user is the owner, False otherwise
         """
         owner_id = await TodoRepo.get_todo_owner_id(session=session, todo_id=todo_id)
-        logging.info(f"owner id: {owner_id}")
-        logging.info(f"user id: {user_id}")
         return owner_id == user_id
