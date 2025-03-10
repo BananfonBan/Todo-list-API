@@ -4,6 +4,11 @@ APP_MODULE=src.app:app
 HOST=0.0.0.0
 PORT=8000
 
+# Install dependencies
+install:
+	pip install -r requirements.txt
+
+
 # Run app
 run: test
 	alembic upgrade head  # Use migration before starting
@@ -14,10 +19,12 @@ run: test
 migrate:
 	alembic upgrade head
 
+
 test:
 	pytest --cov
 
-start-debug:
+
+start-debug: test
 	uvicorn src.app:app --reload
 
 
