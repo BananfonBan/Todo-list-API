@@ -91,7 +91,7 @@ source venv/bin/activate  # For Windows: venv\Scripts\activate
 ### 3. Install Dependencies
 
 ```bash
-pip install -r requirements.txt
+make install
 ```
 
 ### 4. Configure Environment Variables
@@ -110,7 +110,7 @@ Edit .env with your database credentials and other settings:
 | `DB_USER`     | Database username                                                             | `postgres`            |
 | `DB_PASS`     | Database password                                                             | `supersecretpassword` |
 | `DB_NAME`     | Database name                                                                 | `mydb`                |
-| `SECRET_KEY`  | Secret key for JWT encryption. Generate one using: `openssl rand -base64 32`) |                       |
+| `SECRET_KEY`  | Secret key for JWT encryption. Generate one using: `openssl rand -base64 32` |                       |
 | `ALGORITHM`   | Encryption algorithm for JWT (default is `HS256`)                             | `HS256`               |
 | `AUTH_METHOD` | Method for user authentication (`cookie`or`header`).                        |         `cookie`              |
 
@@ -145,7 +145,7 @@ The API supports two authentication methods:
 
 ## Roadmap
 
-- [ ] Add unit tests.
+- [x] Add unit tests.
 - [ ] Implement refresh token functionality.
 - [ ] Create a Docker image for the application.
 - [ ] Add rate limiting and throttling mechanisms.
