@@ -1,6 +1,6 @@
 [project]
 name = "API-example-app-todo-list"
-version = "0.1.0"
+version = "0.1.1"
 description = "Simple todo list API"
 readme = "README.md"
 requires-python = ">=3.10.12"
@@ -21,4 +21,5 @@ test = [
     "pytest>=8.3.5",
     "pytest-asyncio>=0.25.3",
     "pytest-cov>=6.0.0",
+    "pytest-mock>=3.14.0",
 ]
