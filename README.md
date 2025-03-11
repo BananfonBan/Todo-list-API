@@ -124,6 +124,37 @@ make run
 
 By default, the application will be available at `http://localhost:8000`.
 
+## Docker
+
+For convenient deployment, it is recommended to use Docker. The application can be run using `docker-compose`, which will automatically create containers for the API and PostgreSQL.
+
+### Requirements
+
+- Installed [Docker](https://docs.docker.com/get-docker/).
+- Installed [Docker Compose](https://docs.docker.com/compose/install/).
+
+### Running with Docker Compose
+
+Some environment variables are predefined in the `docker-compose.yml`. All you need to do is:
+
+1. Generate a secret key:
+    ```bash
+    openssl rand -base64 32
+    ```
+
+2. Replace the `SECRET_KEY` variable in the `docker-compose.yml` with your generated key:
+    ```yaml
+    - SECRET_KEY=your_secret_key_here
+    ```
+
+3. Start all services using the following command:
+    ```bash
+    docker-compose up -d
+    ```
+
+The application will be available at: [http://localhost:8000](http://localhost:8000).
+
+
 ## API Documentation
 The API is documented using Swagger UI and is accessible at: `http://localhost:8000/docs`
 
