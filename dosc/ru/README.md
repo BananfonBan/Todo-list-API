@@ -95,7 +95,7 @@ source venv/bin/activate  # Для Windows: venv\Scripts\activate
 ### Установка зависимостей
 
 ```bash
-pip install -r requirements.txt
+make install
 ```
 
 ### Настройка окружения
@@ -133,6 +133,35 @@ make run
 
 По умолчанию приложение доступно на порту 8000
 
+## Docker
+Для удобства развертывания рекомендуется использовать Docker. Приложение можно запустить с помощью `docker-compose`, который автоматически создаст контейнеры для API и PostgreSQL.
+
+### Требования
+
+- Установленный [Docker](https://docs.docker.com/get-docker/).
+- Установленный [Docker Compose](https://docs.docker.com/compose/install/).
+
+### Запуск через Docker Compose
+
+В docker-compose.yml уже предопределены некоторые переменные окружения. Вам остается только:
+
+1. Сгенерировать секретный ключ:
+    ```bash
+    openssl rand -base64 32
+    ```
+
+2. Заменить переменную в docker-compose:
+    ```yaml
+    - SECRET_KEY=your_secret_key
+    ```
+
+3. Запустить все сервисы с помощью команды:
+   ```bash
+   docker-compose up -d
+   ```
+
+Приложение будет доступно по адресу: [http://localhost:8000](http://localhost:8000).
+
 ## API Документация
 
 API документировано с помощью Swagger UI и доступно по адресу:
@@ -155,7 +184,7 @@ API поддерживает две системы аутентификации:
 
 ## Roadmap
 
-- [ ] Добавить тесты
+- [x] Добавить тесты
 - [ ] Добавить систему refresh токенов
 - [ ] Создать Docker-образ приложения
 - [ ] Добавить систему Rate Limiting и Throttling
