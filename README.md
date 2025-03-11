@@ -178,7 +178,7 @@ The API supports two authentication methods:
 
 - [x] Add unit tests.
 - [ ] Implement refresh token functionality.
-- [ ] Create a Docker image for the application.
+- [x] Create a Docker image for the application.
 - [ ] Add rate limiting and throttling mechanisms.
 
 ## Contribution
