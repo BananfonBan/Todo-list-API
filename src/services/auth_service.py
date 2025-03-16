@@ -4,10 +4,17 @@ from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from passlib.context import CryptContext
 
-from src.repositories import UserRepo
+from src.config.base_config import get_max_active_sessions
+from src.repositories import UserRepo, TokenRepo
 from src.services.jwt_service import JWTService
 from src.exceptions import services_exceptions
-from src.dto import UserResponseDTO, UserCreateDTO, UserLoginDTO, TokenDTO
+from src.dto import (
+    UserResponseDTO,
+    UserCreateDTO,
+    UserLoginDTO,
+    TokenDTO,
+    CreateRefreshTokenDTO,
+)
 
 from src.config.logging_confing import logging  # noqa
 
@@ -72,8 +79,31 @@ class AuthService:
 
             current_user = await UserRepo.find_by_email(session=s, email=user.email)
 
-        token = JWTService.create_access_token(current_user.id)
-        return TokenDTO(access_token=token, token_type="bearer")
+            # Create access and refresh tokens
+            access_token = JWTService.create_access_token(current_user.id)
+            refresh_token = JWTService.create_refresh_token(current_user.id)
+            expire_time = JWTService.get_expire_time(refresh_token)
+
+            # Check if user has too many active sessions
+            tokens_count = await TokenRepo.count_tokens_for_user(
+                session=s, user_id=current_user.id
+            )
+            while tokens_count >= get_max_active_sessions():
+                await TokenRepo.delete_oldest_token(session=s, user_id=current_user.id)
+                tokens_count = await TokenRepo.count_tokens_for_user(
+                    session=s, user_id=current_user.id
+                )
+
+            await TokenRepo.add_token(
+                session=s,
+                token=CreateRefreshTokenDTO(
+                    token=refresh_token, user_id=current_user.id, expires_at=expire_time
+                ),
+            )
+
+        return TokenDTO(
+            access_token=access_token, refresh_token=refresh_token, token_type="bearer"
+        )
 
     @staticmethod
     async def get_current_user(
@@ -108,3 +138,52 @@ class AuthService:
 
         user = await UserRepo.find_by_id(session, int(user_id))
         return user
+
+    @staticmethod
+    async def refresh_token(
+        session: AsyncSession, refresh_token: str, user_id: int
+    ) -> Optional[TokenDTO]:
+        """
+        Refresh a user's access and refresh tokens.
+
+        :param session: AsyncSession - SQLAlchemy async session
+        :param refresh_token: str - Refresh token to refresh
+        :user_id: int - User ID
+        :return: Optional[TokenDTO] - New access and refresh tokens
+        """
+        async with session as s:
+            old_token = await TokenRepo.check_token_exist(session=s, token=refresh_token)
+            if old_token is None:
+                raise services_exceptions.NotFoundTokenError("Token not found")
+            
+            new_refresh_token = JWTService.create_refresh_token(user_id)
+            new_expire_time = JWTService.get_expire_time(new_refresh_token)
+            new_refresh_token = await TokenRepo.update_token(
+                session=s,
+                old_token=old_token.token,
+                new_token=CreateRefreshTokenDTO(
+                    token=new_refresh_token, user_id=user_id, expires_at=new_expire_time
+                ),
+        )
+        new_access_token = JWTService.create_access_token(user_id)
+
+        return TokenDTO(
+            access_token=new_access_token,
+            refresh_token=new_refresh_token.token,
+            token_type="bearer",
+        )
+
+    @staticmethod
+    async def logout_user(
+        session: AsyncSession, user_id: int, refresh_token: str
+    ) -> None:
+        """
+        Logout a user by deleting their refresh token.
+
+        :param session: AsyncSession - SQLAlchemy async session
+        :param user_id: int - User ID
+        :param refresh_token: str - Refresh token to delete
+        :return: None
+        """
+        await TokenRepo.delete_token(session, token=refresh_token, user_id=user_id)
+        return None

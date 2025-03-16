@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     SECRET_KEY: SecretStr
     ALGORITHM: str
     AUTH_METHOD: Literal["header", "cookie"]
+    MAX_ACTIVE_SESSIONS: int
 
 
 settings = Settings()
@@ -29,3 +30,6 @@ def get_auth_data() -> dict[Literal["secret_key", "algorithm"], str]:
 
 def get_auth_method() -> Literal["header", "cookie"]:
     return settings.AUTH_METHOD
+
+def get_max_active_sessions() -> int:
+    return settings.MAX_ACTIVE_SESSIONS

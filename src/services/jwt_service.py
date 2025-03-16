@@ -17,8 +17,41 @@ class JWTService:
         :param expires_delta: timedelta - Token expiration time (default: 30 minutes)
         :return: str - Encoded JWT token
         """
-        data = {"sub": str(user_id)}
+        data = {"sub": str(user_id), "type": "access"}
         return JWTService._create_token(data, expires_delta)
+
+
+    @staticmethod
+    def create_refresh_token(
+        user_id: int, expires_delta: timedelta = timedelta(days=30)
+    ) -> str:
+        """
+        Create a new JWT refresh token for a usr.
+
+        :param user_id: int - The ID of the user for whom to create the token
+        :param expires_delta: timedelta - Token expiration time (default: 30 days)
+        :return: str - Encoded JWT token
+        """
+        data = {"sub": str(user_id), "type": "refresh"}
+        return JWTService._create_token(data, expires_delta)
+
+
+    @staticmethod
+    def get_expire_time(token: str) -> Optional[datetime]:
+        """
+        Get the expiration time of a JWT token.
+
+        :param token: str - JWT token to decode
+        :return: Optional[datetime] - Token expiration time or None if token is invalid
+        """
+        payload = JWTService.decode_token(token)
+        if payload is None:
+            return None
+
+        expire = payload.get("exp")
+        expire_time = datetime.fromtimestamp(int(expire), tz=timezone.utc)
+        return expire_time
+
 
     @staticmethod
     def _create_token(
