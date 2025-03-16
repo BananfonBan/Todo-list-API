@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import SecretStr, ConfigDict
+from pydantic import SecretStr, ConfigDict, Field
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     SECRET_KEY: SecretStr
     ALGORITHM: str
     AUTH_METHOD: Literal["header", "cookie"]
-    MAX_ACTIVE_SESSIONS: int
+    MAX_ACTIVE_SESSIONS: int = Field(ge=1)
 
 
 settings = Settings()
