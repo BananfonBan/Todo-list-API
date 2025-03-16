@@ -34,6 +34,7 @@ This RESTful API allows you to manage a list of tasks (ToDos). It provides the a
     - Authentication via JWT tokens:
         - Through HTTP-only cookies.
         - Through the Authorization header.
+    - Support Refres tokens
 
 
 ## Technologies Used
@@ -113,6 +114,7 @@ Edit .env with your database credentials and other settings:
 | `SECRET_KEY`  | Secret key for JWT encryption. Generate one using: `openssl rand -base64 32` |                       |
 | `ALGORITHM`   | Encryption algorithm for JWT (default is `HS256`)                             | `HS256`               |
 | `AUTH_METHOD` | Method for user authentication (`cookie`or`header`).                        |         `cookie`              |
+| `MAX_ACTIVE_SESSIONS` | The maximum number of active sessions for the user | `5`
 
 ### Run the Application
 
@@ -177,7 +179,7 @@ The API supports two authentication methods:
 ## Roadmap
 
 - [x] Add unit tests.
-- [ ] Implement refresh token functionality.
+- [x] Implement refresh token functionality.
 - [x] Create a Docker image for the application.
 - [ ] Add rate limiting and throttling mechanisms.
 
