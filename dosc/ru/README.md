@@ -59,6 +59,7 @@
     - Аутентификация через JWT-токены:
         - Через HTTP-only cookies.
         - Через заголовок `Authorization`.
+    - Поддержка refres токенов
 
 
 ## Требования
@@ -112,6 +113,7 @@ DB_NAME=mydb
 SECRET_KEY=S8tqf6OIMaOAJrOa4m1tC0h2XiH/4yFX0ezcIto0gLU=
 ALGORITHM=HS256
 AUTH_METHOD=cookie
+MAX_ACTIVE_SESSIONS=5
 ```
 
 | Переменная         | Описание                                                                 |
@@ -124,6 +126,8 @@ AUTH_METHOD=cookie
 | `SECRET_KEY`       | Секретный ключ для работы JWT (генерируется командой `openssl rand -base64 32`)|
 | `ALGORITHM`        | Алгоритм шифрования JWT (`HS256` можно оставить без изменения)                                         |
 | `AUTH_METHOD`      | Метод авторизации (`cookie` или `header`)                               |
+| `MAX_ACTIVE_SESSIONS` | Максимальное количество активных сесcий для пользователя |
+
 
 ### Запуск
 
@@ -185,7 +189,7 @@ API поддерживает две системы аутентификации:
 ## Roadmap
 
 - [x] Добавить тесты
-- [ ] Добавить систему refresh токенов
+- [x] Добавить систему refresh токенов
 - [x] Создать Docker-образ приложения
 - [ ] Добавить систему Rate Limiting и Throttling
 
