@@ -23,6 +23,9 @@ migrate:
 test:
 	pytest --cov
 
+test-vv:
+	pytest --cov -vv
+
 
 start-debug: test
 	uvicorn src.app:app --reload
