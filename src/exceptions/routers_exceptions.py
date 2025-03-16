@@ -39,6 +39,10 @@ class NotFoundUser(UnauthorizedError):
     detail = "User not found"
 
 
+class NotValidRefreshToken(UnauthorizedError):
+    detail = "Invalid or revoked refresh token"
+
+
 class NotFoundToDo(BaseAPIException):
     status_code = status.HTTP_404_NOT_FOUND
     detail = "Todo with this ID not found"

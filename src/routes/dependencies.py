@@ -13,14 +13,14 @@ from src.config.logging_confing import logging  # noqa
 token_key = APIKeyHeader(name="Authorization")
 
 
-async def get_token_from_cookie(request: Request):
+async def get_access_token_from_cookie(request: Request):
     token = request.cookies.get("users_access_token")
     if not token:
         raise routers_exceptions.UnauthorizedError
     return token
 
 
-async def get_token_from_headers(auth_key: str = Security(token_key)):
+async def get_access_token_from_headers(auth_key: str = Security(token_key)):
     if not auth_key:
         raise routers_exceptions.UnauthorizedError
 
@@ -35,17 +35,23 @@ def get_current_auth_method():
     auth_method = get_auth_method()
 
     if auth_method == "cookie":
-        return get_token_from_cookie
+        return get_access_token_from_cookie
     if auth_method == "header":
-        return get_token_from_headers
+        return get_access_token_from_headers
     else:
         raise ValueError("Invalid AUTH_METHOD. Use 'header' or 'cookie'.")
 
+get_access_token = get_current_auth_method()
 
-get_token = get_current_auth_method()
+
+async def get_refresh_token(request: Request) -> str:
+    token = request.cookies.get("users_refresh_token")
+    if not token:
+        raise routers_exceptions.UnauthorizedError
+    return token
 
 
-async def get_current_user(token: str = Depends(get_token)) -> SUser:
+async def get_current_user(token: str = Depends(get_access_token)) -> SUser:
     try:
         user = await AuthService.get_current_user(session=get_db_session(), token=token)
 
