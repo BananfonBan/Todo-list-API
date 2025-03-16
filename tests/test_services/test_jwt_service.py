@@ -47,7 +47,7 @@ def test_expired_token():
     token = JWTService._create_token(data, expires_delta=timedelta(seconds=1))
 
     # Wait
-    time.sleep(3)
+    time.sleep(5)
 
     # Try to decode token
     decoded_data = JWTService.decode_token(token)

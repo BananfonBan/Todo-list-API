@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 import pytest_asyncio
 import pytest
 from sqlalchemy.orm import sessionmaker
@@ -7,7 +9,7 @@ from fastapi.testclient import TestClient
 from src.app import app
 from src.db.database import ModelBase, get_db_session
 from src.services.auth_service import get_password_hash
-from src.models import ToDoModel, UserModel
+from src.models import ToDoModel, UserModel, RefreshTokenModel
 from src.config.logging_confing import logging  # noqa
 
 
@@ -57,7 +59,7 @@ def client(db_session):
 
 
 @pytest.fixture
-async def test_user(db_session):
+async def test_user(db_session: AsyncSession):
     user = UserModel(
         email="test@example.com",
         name="Test User",
@@ -67,3 +69,16 @@ async def test_user(db_session):
     await db_session.commit()
     await db_session.refresh(user)
     return user
+
+
+@pytest_asyncio.fixture
+async def test_user_token(db_session: AsyncSession):
+    token = RefreshTokenModel(
+        token="test_token",
+        user_id=1,
+        expires_at=datetime.now() + timedelta(days=1),
+    )
+    db_session.add(token)
+    await db_session.commit()
+    await db_session.refresh(token)
+    return token
