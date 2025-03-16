@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
 from src.db.database import ModelBase, DATABASE_URL
-from src.models import UserModel, ToDoModel # noqa
+from src.models import UserModel, ToDoModel, RefreshTokenModel # noqa
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

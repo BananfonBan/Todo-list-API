@@ -20,3 +20,4 @@ class UserModel(ModelBase):
     email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     password: Mapped[str] = mapped_column(String, nullable=False)
     todos = relationship("ToDoModel", back_populates="user", cascade="all, delete-orphan",)
+    refresh_tokens = relationship("RefreshTokenModel", back_populates="user", cascade="all, delete-orphan")
